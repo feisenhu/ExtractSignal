@@ -560,17 +560,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             projXeta->Draw();
             projXeta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);
 
-            Bool_t reject;
-            Double_t BackgroundFunction (Double_t *x, Double_t *par) {
-              if (reject && x[0] > 0.5 && x[0] < 0.6) {
-                TF1::RejectPoint();
-                return 0;
-              }
-              // return par[0] + par[1]*x[0]
-              return par[0]+par[1]*x[0]+par[2]*x[0]*x[0]
-            }
-
-
+            
             // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
             // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
             // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);

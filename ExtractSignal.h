@@ -13,6 +13,16 @@ void SetRebinningY(Int_t n_bins, const Double_t* bins, Int_t n_rebin, std::vecto
 void LossBySecondaryCuts(TString PairCase, TString RecSecCaseNames, std::vector <TList*> HistCaseList, const unsigned int NRecCuts,  TString Replace1, TString Replace2);
 Bool_t Rebin2DHistogram(TH2D& hIn, std::vector<Double_t> fBinsRebin_Mee, std::vector<Double_t> fBinsRebin_Ptee);
 
+Bool_t reject;
+Double_t BackgroundFunction (Double_t *x, Double_t *par) {
+  if (reject && x[0] > 0.5 && x[0] < 0.6) {
+    TF1::RejectPoint();
+    return 0;
+  }
+  // return par[0] + par[1]*x[0]
+  return par[0]+par[1]*x[0]+par[2]*x[0]*x[0]
+}
+
 
 void SetTextSettings(TLatex* text, Double_t textSize){
   text->SetNDC();
