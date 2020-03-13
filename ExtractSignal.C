@@ -586,14 +586,14 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             // SetFitSettingsEtaBackground(fBGRight);
             if(DoFit == kTRUE){
               // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
-              fEtaFit->SetParameters(fBackgroundFit->GetParameters(),projXeta->GetMaximum()/2,0.547,0.01,0.4);
+              fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
               // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
               // fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
-              projXeta->Fit("fEtaFit","QRMNE0");
-              projXeta->Fit("fEtaFit","QRMNE0");
-              projXeta->Fit("fEtaFit","QRMNE0");
+              // projXeta->Fit("fEtaFit","QRMNE0");
+              // projXeta->Fit("fEtaFit","QRMNE0");
+              // projXeta->Fit("fEtaFit","QRMNE0");
 
 
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
@@ -604,7 +604,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               // projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
               // fBackgroundFit->SetParameters(fEtaFit->GetParameter(0),fEtaFit->GetParameter(1),fEtaFit->GetParameter(2));
               // fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
-              fEtaFit->Draw("same");
+              // fEtaFit->Draw("same");
               // fBGLeft->Draw("same");
               // fBGRight->Draw("same");
               // fSignalFit    -> Draw("same");
