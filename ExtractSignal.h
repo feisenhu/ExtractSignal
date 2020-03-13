@@ -15,7 +15,7 @@ Bool_t Rebin2DHistogram(TH2D& hIn, std::vector<Double_t> fBinsRebin_Mee, std::ve
 
 Bool_t reject;
 Double_t BackgroundFunction (Double_t *x, Double_t *par) {
-  if (reject && x[0] > 0.5 && x[0] < 0.6) {
+  if (reject && x[0] > 0.45 && x[0] < 0.6) {
     TF1::RejectPoint();
     return 0;
   }
