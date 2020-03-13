@@ -56,7 +56,9 @@ double MassCutSecondary = 0.01;
 // TString TrainNumber = "merged_297_17d1_LF_298_LHC17h3_WithPrefilter";                     // is used to keep order in output path
 // TString TrainNumber = "merged_299_17d1_LF_300_LHC17h3_Prefilter0.1:0.3_SecMass0";            // is used to keep order in output path
 // TString TrainNumber = "merged_302_17d1_LF_303_LHC17h3_Prefilter0.1:0.2_SecMass0";            // is used to keep order in output path
-TString TrainNumber = "merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen";            // is used to keep order in output path
+// TString TrainNumber = "merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen";            // is used to keep order in output path
+TString TrainNumber = "merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals";            // is used to keep order in output path
+
 
 
 void ExtractSignal(){
@@ -102,7 +104,8 @@ void ExtractSignal(){
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_297_17d1_LF_298_LHC17h3_WithPrefilter/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_299_17d1_LF_300_LHC17h3_Prefilter0.1:0.3_SecMass0/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_302_17d1_LF_303_LHC17h3_Prefilter0.1:0.2_SecMass0/AnalysisResults.root");
-  TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen/AnalysisResults.root");
+  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen/AnalysisResults.root");
+  TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals/AnalysisResults.root");
 
 
 
