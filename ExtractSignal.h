@@ -23,15 +23,6 @@ Double_t BackgroundFunction (Double_t *x, Double_t *par) {
   return par[0]+par[1]*x[0]+par[2]*x[0]*x[0];
 }
 
-// Double_t EtaFit (Double_t *x, Double_t *par) {
-//   // if (reject && x[0] > 0.5 && x[0] < 0.6) {
-//   //   TF1::RejectPoint();
-//   //   return 0;
-//   // }
-//   // return par[0] + par[1]*x[0];
-//   // return par[0]+par[1]*x[0]+par[2]*x[0]*x[0];
-//   return par[0]+par[1]*x[0]+par[2]*x[0]*x[0]+(x<par[4])*(par[3]*(TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2)+TMath::Exp((x[0]-par[4])/par[6])*(1.-TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2))))+(x[0]>=par[4])*(par[3]*TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2))
-// }
 
 void SetTextSettings(TLatex* text, Double_t textSize){
   text->SetNDC();
