@@ -560,38 +560,59 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             projXeta->Draw();
             projXeta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);
 
+            Bool_t reject;
+            Double_t BackgroundFunction (Double_t *x, Double_t *par) {
+              if (reject && x[0] > 0.5 && x[0] < 0.6) {
+                TF1::RejectPoint();
+                return 0;
+              }
+              // return par[0] + par[1]*x[0]
+              return par[0]+par[1]*x[0]+par[2]*x[0]*x[0]
+            }
+
+
             // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
             // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
             // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fSignalFit = new TF1("fSignalEta","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fBackgroundFit = new TF1("fBackgroundEta","pol2",lowerEtaMassRange,upperEtaMassRange);
-            TF1* fBGLeft = new TF1("fBGLeft","pol2",lowerEtaMassRange,upperEtaMassRange);
-            TF1* fBGRight = new TF1("fBGRight","pol2",lowerEtaMassRange,upperEtaMassRange);
+            TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange);
+            // TF1* fBGLeft = new TF1("fBGLeft","pol2",lowerEtaMassRange,upperEtaMassRange);
+            // TF1* fBGRight = new TF1("fBGRight","pol2",lowerEtaMassRange,upperEtaMassRange);
             // SetFitSettingsEta(fEtaFit);
             // SetFitSettingsEta(fSignalFit);
-            // SetFitSettingsEtaBackground(fBackgroundFit);
+            SetFitSettingsEtaBackground(fBackgroundFit);
+            // SetFitSettingsEtaBackground(fBGLeft);
+            // SetFitSettingsEtaBackground(fBGRight);
             if(DoFit == kTRUE){
               // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
               // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
+              fBackgroundFit->SetParameters(5,0.0,0.01);
               // fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
               // projXeta->Fit("fEtaFit","QRMNE0");
               // projXeta->Fit("fEtaFit","QRMNE0");
               // projXeta->Fit("fEtaFit","QRMNE0");
-              projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
-              projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
-              projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
-              projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
-              projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
-              projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
+
+              reject = kTRUE;
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              reject = kFALSE;
+              // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
+              // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
+              // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
+              // projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
+              // projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
+              // projXeta->Fit("fBGRight","QRMNE0","",0.6,0.8);
               // fBackgroundFit->SetParameters(fEtaFit->GetParameter(0),fEtaFit->GetParameter(1),fEtaFit->GetParameter(2));
               // fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
               // fEtaFit->Draw("same");
-              fBGLeft->Draw("same");
-              fBGRight->Draw("same");
+              // fBGLeft->Draw("same");
+              // fBGRight->Draw("same");
               // fSignalFit    -> Draw("same");
-              // fBackgroundFit-> Draw("same");
+              fBackgroundFit-> Draw("same");
             }
             pT_Intervall  -> Draw("same");
             cSignalCanvas -> cd();
