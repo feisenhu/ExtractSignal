@@ -586,9 +586,9 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               // projXeta->Fit("fEtaFit","QRMNE0");
 
               reject = kTRUE;
-              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
-              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
-              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
               reject = kFALSE;
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
