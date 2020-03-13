@@ -586,10 +586,10 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
               fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
-              // fEtaFit->SetParLimits(6,0,0.55);
-              projXeta->Fit("fEtaFit","0");
-              projXeta->Fit("fEtaFit","0");
-              projXeta->Fit("fEtaFit","0");
+              fEtaFit->SetParLimits(6,0,0.01);
+              projXeta->Fit("fEtaFit","QRMNE0");
+              projXeta->Fit("fEtaFit","QRMNE0");
+              projXeta->Fit("fEtaFit","QRMNE0");
 
               fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
               fEtaFit->Draw("same");
