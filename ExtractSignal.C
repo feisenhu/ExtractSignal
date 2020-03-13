@@ -603,47 +603,47 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             cProjPtEtaCanvas->cd(j+1);
             fProjPad->Draw();
 
-          //   // Substract background
-          //   for (int iBin = 1; iBin <= projXeta->GetNbinsX(); iBin++) {
-          //     Double_t binCenter = projXeta->GetBinCenter(iBin);
-          //     Double_t fitValue  = fBackgroundFit->Eval(binCenter);
-          //     Double_t newBinContent = projXeta->GetBinContent(iBin) - fitValue;
-          //     fSignalEta->SetBinContent(iBin, newBinContent);
-          //   }
-          //   SetMultipleHistoStandardSettings(fSignalEta);
-          //
-          //   TAxis *xAxis = fSignalEta->GetXaxis();
-          //   Int_t binLowerSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2));
-          //   Int_t binUpperSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
-          //   Double_t fSignalValue     = fSignalEta->Integral(binLowerSigmaEdge,binUpperSigmaEdge);
-          //   // Double_t fBackgroundValue = fBackgroundFit->Integral(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
-          //   Double_t fBackgroundValue = 0;
-          //   for (int iSigmaBins = 0; iSigmaBins < (binUpperSigmaEdge-binLowerSigmaEdge); iSigmaBins++) {
-          //     fBackgroundValue = fBackgroundValue + fBackgroundFit->Eval(projXeta->GetBinCenter(binLowerSigmaEdge+iSigmaBins));
-          //   }
-          //   Double_t fSignalOverBackground = fSignalValue/fBackgroundValue;
-          //   TLatex *fTextSigBack    = new TLatex(startTextX+0.15, startTextY    , Form("#frac{S}{B} = %g", fSignalOverBackground));
-          //   SetTextSettings(fTextSigBack,textSize);
-          //
-          //   fSigPad->cd();
-          //   fSignalEta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);  // Range of x-Axis should be the same of the fit region
-          //   // fSignalEta->GetYaxis()->SetRangeUser((fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.2,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.2);
-          //   TLine* fLowerSigmaLine = new TLine(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
-          //   TLine* fUpperSigmaLine = new TLine(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
-          //   SetSigmaLineSettings(fLowerSigmaLine);
-          //   SetSigmaLineSettings(fUpperSigmaLine);
-          //   fSignalEta->Draw();
-          //   fSignalFit->Draw("same");
-          //   fTextSigBack->Draw("same");
-          //   fLowerSigmaLine->Draw("same");
-          //   fUpperSigmaLine->Draw("same");
-          //   cSignalCanvas->cd();
-          //   fSigPad->Draw();
-          //   cSignalCanvas -> SaveAs(Form("%s%s.pdf",DocumentPathSignals.Data(), fSignalEta->GetName()));
-          //   cSignalEtaCanvas->cd(j+1);
-          //   fSigPad->Draw();
-          //
-          //   Vec_SigBack_Eta.push_back(fSignalOverBackground);
+            // Substract background
+            for (int iBin = 1; iBin <= projXeta->GetNbinsX(); iBin++) {
+              Double_t binCenter = projXeta->GetBinCenter(iBin);
+              Double_t fitValue  = fBackgroundFit->Eval(binCenter);
+              Double_t newBinContent = projXeta->GetBinContent(iBin) - fitValue;
+              fSignalEta->SetBinContent(iBin, newBinContent);
+            }
+            SetMultipleHistoStandardSettings(fSignalEta);
+
+            TAxis *xAxis = fSignalEta->GetXaxis();
+            Int_t binLowerSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2));
+            Int_t binUpperSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
+            Double_t fSignalValue     = fSignalEta->Integral(binLowerSigmaEdge,binUpperSigmaEdge);
+            // Double_t fBackgroundValue = fBackgroundFit->Integral(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
+            Double_t fBackgroundValue = 0;
+            for (int iSigmaBins = 0; iSigmaBins < (binUpperSigmaEdge-binLowerSigmaEdge); iSigmaBins++) {
+              fBackgroundValue = fBackgroundValue + fBackgroundFit->Eval(projXeta->GetBinCenter(binLowerSigmaEdge+iSigmaBins));
+            }
+            Double_t fSignalOverBackground = fSignalValue/fBackgroundValue;
+            TLatex *fTextSigBack    = new TLatex(startTextX+0.15, startTextY    , Form("#frac{S}{B} = %g", fSignalOverBackground));
+            SetTextSettings(fTextSigBack,textSize);
+
+            fSigPad->cd();
+            fSignalEta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);  // Range of x-Axis should be the same of the fit region
+            // fSignalEta->GetYaxis()->SetRangeUser((fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.2,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.2);
+            TLine* fLowerSigmaLine = new TLine(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
+            TLine* fUpperSigmaLine = new TLine(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
+            SetSigmaLineSettings(fLowerSigmaLine);
+            SetSigmaLineSettings(fUpperSigmaLine);
+            fSignalEta->Draw();
+            fSignalFit->Draw("same");
+            fTextSigBack->Draw("same");
+            fLowerSigmaLine->Draw("same");
+            fUpperSigmaLine->Draw("same");
+            cSignalCanvas->cd();
+            fSigPad->Draw();
+            cSignalCanvas -> SaveAs(Form("%s%s.pdf",DocumentPathSignals.Data(), fSignalEta->GetName()));
+            cSignalEtaCanvas->cd(j+1);
+            fSigPad->Draw();
+
+            Vec_SigBack_Eta.push_back(fSignalOverBackground);
           }
 
 
