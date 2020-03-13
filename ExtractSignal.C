@@ -561,41 +561,35 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             projXeta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);
 
 
-            TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,3);
-            SetFitSettingsEtaBackground(fBackgroundFit);
-            fBackgroundFit->SetParameters(1,1,1);
-
-            reject = kTRUE;
-            projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
-            projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
-            projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
-            reject = kFALSE;
-
             // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
-            // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
             // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
             // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fSignalFit = new TF1("fSignalEta","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fBackgroundFit = new TF1("fBackgroundEta","pol2",lowerEtaMassRange,upperEtaMassRange);
+            TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,3);
             // TF1* fBGLeft = new TF1("fBGLeft","pol2",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fBGRight = new TF1("fBGRight","pol2",lowerEtaMassRange,upperEtaMassRange);
             // SetFitSettingsEta(fEtaFit);
             // SetFitSettingsEta(fSignalFit);
-            // SetFitSettingsEtaBackground(fBackgroundFit);
+            SetFitSettingsEtaBackground(fBackgroundFit);
             // SetFitSettingsEtaBackground(fBGLeft);
             // SetFitSettingsEtaBackground(fBGRight);
             if(DoFit == kTRUE){
               // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
-              // fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
               // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
+              fBackgroundFit->SetParameters(1,1,1);
               // fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
               // projXeta->Fit("fEtaFit","QRMNE0");
               // projXeta->Fit("fEtaFit","QRMNE0");
               // projXeta->Fit("fEtaFit","QRMNE0");
 
-
+              reject = kTRUE;
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              projXeta->Fit("fBackgroundFit" ,"0","",lowerEtaMassRange,upperEtaMassRange);
+              reject = kFALSE;
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
               // projXeta->Fit("fBGLeft" ,"QRMNE0","",0.3,0.5);
