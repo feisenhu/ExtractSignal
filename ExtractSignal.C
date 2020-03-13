@@ -572,7 +572,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
 
             // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
             // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange,7);
-            TF1 *fEtaFit = new TF1("fEtaFit",EtaFit,lowerEtaMassRange,upperEtaMassRange,7);
+            TF1 *fEtaFit = new TF1("fEtaFit","par[0]+par[1]*x[0]+par[2]*x[0]*x[0]+(x[0]<par[4])*(par[3]*(TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2)+TMath::Exp((x[0]-par[4])/par[6])*(1.-TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2))))+(x[0]>=par[4])*(par[3]*TMath::Exp(-0.5*((x[0]-par[4])/par[5])^2))",lowerEtaMassRange,upperEtaMassRange,7);
             // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fSignalFit = new TF1("fSignalEta","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
             // TF1* fBackgroundFit = new TF1("fBackgroundEta","pol2",lowerEtaMassRange,upperEtaMassRange);
