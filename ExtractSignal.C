@@ -566,11 +566,12 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
 
 
             // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
-            // TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
+            TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
             // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
             TF1* fSignalFit = new TF1("fSignalEta","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
             TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,3);
             // TF1* fBackgroundFit = new TF1("fBackgroundEta","pol2",lowerEtaMassRange,upperEtaMassRange);
+            SetFitSettingsEta(fEtaFit);
             SetFitSettingsEta(fSignalFit);
             SetFitSettingsEtaBackground(fBackgroundFit);
             if(DoFit == kTRUE){
@@ -581,28 +582,18 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
               reject = kFALSE;
 
-              Double_t fBGconst       = fBackgroundFit->GetParameter(0);
-              Double_t fBGfirstorder  = fBackgroundFit->GetParameter(1);
-              Double_t fBGsecondorder = fBackgroundFit->GetParameter(2);
-
-              TF1 *fEtaFit = new TF1("fEtaFit","fBGconst+fBGfirstorder*x+fBGsecondorder*x^2+(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
-              SetFitSettingsEta(fEtaFit);
-
               // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
-              // fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
+              fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
               // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
-              // fEtaFit->SetParLimits(4,0.544,0.55);
+              fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
-              // fEtaFit->SetParLimits(6,0,1);
-              fEtaFit->SetParLimits(1,0.544,0.55);
-              fEtaFit->SetParLimits(3,0,1);
+              fEtaFit->SetParLimits(6,0,1);
               projXeta->Fit("fEtaFit","QRMNE0");
               projXeta->Fit("fEtaFit","QRMNE0");
               projXeta->Fit("fEtaFit","QRMNE0");
 
-              fSignalFit->SetParameters(fEtaFit->GetParameter(0),fEtaFit->GetParameter(1),fEtaFit->GetParameter(2),fEtaFit->GetParameter(3));
-              // fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
+              fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
               fEtaFit->Draw("same");
               fSignalFit    -> Draw("same");
               fBackgroundFit-> Draw("same");
