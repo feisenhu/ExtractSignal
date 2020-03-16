@@ -290,7 +290,7 @@ void ExtractSignal(){
 
       TH2D hTempGen4PairHist         = *(dynamic_cast<TH2D*>(FourPairGenList->FindObject(temp1)));
       TH2D hTempGenSmear4PairHist    = *(dynamic_cast<TH2D*>(FourPairGenSmearedList->FindObject(temp1)));
-      TH2D hTempRec4PairHist         = *(dynamic_cast<TH2D*>(FourPairRecList[0]->FindObject(temp2)));
+      TH2D hTempRec4PairHist         = *(dynamic_cast<TH2D*>(FourPairRecList[1]->FindObject(temp2)));
       hTempGen4PairHist     .Sumw2();
       hTempGenSmear4PairHist.Sumw2();
       hTempRec4PairHist     .Sumw2();
