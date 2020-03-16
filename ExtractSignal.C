@@ -586,6 +586,9 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
               // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
               // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
+              fEtaFit->FixParameter(0,fBackgroundFit->GetParameter(0));
+              fEtaFit->FixParameter(1,fBackgroundFit->GetParameter(1));
+              fEtaFit->FixParameter(2,fBackgroundFit->GetParameter(2));
               fEtaFit->SetParLimits(4,0.544,0.55);
               // fEtaFit->SetParLimits(5,0.0,0.01);
               fEtaFit->SetParLimits(6,0,1);
