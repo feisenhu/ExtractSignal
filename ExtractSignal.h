@@ -23,6 +23,16 @@ Double_t BackgroundFunction (Double_t *x, Double_t *par) {
   return par[0]+par[1]*x[0]+par[2]*x[0]*x[0];
 }
 
+Double_t template2(double *x, double *pars)
+{
+  double par0 = pars[0];
+  double par1 = pars[1];
+
+  double y1 = h1->GetBinContent(h1->GetXaxis()->FindFixBin(x[0]));
+  double y2 = h2->GetBinContent(h2->GetXaxis()->FindFixBin(x[0]));
+  return par0*y1 + par1*y2;
+}
+
 
 void SetTextSettings(TLatex* text, Double_t textSize){
   text->SetNDC();
