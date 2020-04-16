@@ -21,24 +21,24 @@ Bool_t DoDebug                = kTRUE;
 
 Bool_t DoRebin                = kTRUE;    // Do Rebinning of TH2 Histograms
 
+Bool_t PrimarySoBRatio        = kTRUE;    // Plot S/B Ratio for PrimaryPairs and find best region to apply primary mass cut
+
 Bool_t ExtPairSig             = kFALSE;    // Extract Pair Signal
-Bool_t ExtFourPairSig         = kTRUE;    // Extract Four Pair Signal
-Bool_t ExtFourPairPionSig     = kTRUE;
-Bool_t ExtFourPairEtaSig      = kTRUE;
+Bool_t ExtFourPairSig         = kFALSE;    // Extract Four Pair Signal
+Bool_t ExtFourPairPionSig     = kFALSE;
+Bool_t ExtFourPairEtaSig      = kFALSE;
+  Bool_t DoPtProj               = kFALSE;    // Do Pt Projection
+  Bool_t DoMassProj             = kFALSE;    // Do Mass Projection
+    Bool_t DoTemplateFit          = kFALSE;    // true=fit data with a*MCSignalHist+b*MCBackgrounfHist , false = standard TF1 gauss exp  and pol2 fits ; Do Fit of true reconstructed Singal and reconstructed Background
+    Bool_t DoFit                  = kFALSE;    // Fitting Backround
+    Bool_t DoSignalOverBackground = kFALSE;    // Do Signal over Background Ratio (based on DoMassProj)
 
 Bool_t ExtGen                 = kFALSE;    // Extract Generated Signal
 Bool_t ExtGenSmeared          = kFALSE;    // Extract Generated Smeared Signal
-Bool_t ExtRec                 = kTRUE;    // Extract Generated Signal
-
-Bool_t DoPtProj               = kFALSE;    // Do Pt Projection
-Bool_t DoMassProj             = kTRUE;    // Do Mass Projection
-Bool_t DoSignalOverBackground = kTRUE;    // Do Signal over Background Ratio (based on DoMassProj)
-Bool_t DoTrueSigBackFit       = kTRUE;    // Do Fit of true reconstructed Singal and reconstructed Background
+Bool_t ExtRec                 = kFALSE;    // Extract Generated Signal
 
 Bool_t ExtMassCut             = kFALSE;    // Extract Mass Cut Histogram
 Bool_t DoCutEff               = kFALSE;    // Plotting Cut Efficiency
-
-Bool_t DoFit                  = kTRUE;    // Fitting Backround
 
 Bool_t DoCompGenSmearRec      = kFALSE;    // Comparison between GeneratedSmeared and Reconstructed in Pt, Eta and Phi on single electron level
 Bool_t DoLossBySecondaryCuts  = kFALSE;    // Plotting the loss of secondaries, for variation of cuts
@@ -46,23 +46,11 @@ Bool_t DoLossBySecondaryCuts  = kFALSE;    // Plotting the loss of secondaries, 
 double MassCutPrimary   = 0.547862;
 double MassCutSecondary = 0.01;
 
-// TString TrainNumber = "284_20191120-2031LHC17h3NewPairingWithMassCut";
-// TString TrainNumber = "285_20191121-1516LHC17h3NewPairingNoMassCuts";
-// TString TrainNumber = "287_20191122-1803LHC17h3_20MeVMassCut";
-// TString TrainNumber = "288_20191205-1100_only_eta_MCSignals_Masscut_Pion_Eta_0_01";
-// TString TrainNumber = "LocalLHC17h3_MassCut_Prim0.55_Sec0.04";                         // used to keep order in output path
-// TString TrainNumber = "LocalLHC17h3_V0Cuts_CompareCuts";                               // is used to keep order in output path
-// TString TrainNumber = "291_20200205-1134LHC17h3firstV0secondaries";                    // is used to keep order in output path
-// TString TrainNumber = "298_20200218-1721LH17h3_DalitzSignal_WithPrefilter_0.1-0.2";       // is used to keep order in output path
-// TString TrainNumber = "merged_295_17d1_LF_296_LHC17h3_WithoutPrefilter";                  // is used to keep order in output path
-// TString TrainNumber = "merged_297_17d1_LF_298_LHC17h3_WithPrefilter";                     // is used to keep order in output path
-// TString TrainNumber = "merged_299_17d1_LF_300_LHC17h3_Prefilter0.1:0.3_SecMass0";            // is used to keep order in output path
-// TString TrainNumber = "merged_302_17d1_LF_303_LHC17h3_Prefilter0.1:0.2_SecMass0";            // is used to keep order in output path
-// TString TrainNumber = "merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen";            // is used to keep order in output path
-// TString TrainNumber = "merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals";            // is used to keep order in output path
+TString TrainNumber = "merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals";            // is used to keep order in output path
 // TString TrainNumber = "merged_312_LHC18h1_313_LHC17d1_LF_314_LHC17h3_widerPreFilter";            // is used to keep order in output path
 // TString TrainNumber = "merged_315_LHC18h1_316_LHC17d1_LF_317_LHC17h3_without_Prefilter_primprecuts_pionmasscut";            // is used to keep order in output path
-TString TrainNumber = "merged_318_LHC18h1_319_LHC17d1_LF_320_LHC17h3_Prefilter_primprecuts_pionmasscut";            // is used to keep order in output path
+// TString TrainNumber = "merged_318_LHC18h1_319_LHC17d1_LF_320_LHC17h3_Prefilter_primprecuts_pionmasscut";            // is used to keep order in output path
+// TString TrainNumber = "merged_321_LHC18h1_322_LHC17d1_LF_323_LHC17h3_SecSecPreFilter";            // is used to keep order in output path
 
 
 
@@ -97,23 +85,11 @@ void ExtractSignal(){
 
   // Open file to read in the required histograms
   // TFile *fFile = new TFile("/data/feisenhut/1_EtaReconstruction/AnalysisResults.root"); // This file should exist
-  // TFile *fFile = new TFile("/data/feisenhut/1_EtaReconstruction/AnalysisResultsNewPairing50DataSetWithMassCut.root"); // This file should exist
-  // TFile *fFile = new TFile("/u/feisenhut/Downloads/AnalysisResults(1).root"); // This file should exist
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/284_20191120-2031LHC17h3NewPairingWithMassCut/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/285_20191121-1516LHC17h3NewPairingNoMassCuts/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/287_20191122-1803LHC17h3_20MeVMassCut/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/288_20191205-1100_only_eta_MCSignals_Masscut_Pion_Eta_0_01/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/291_20200205-1134LHC17h3firstV0secondaries/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/298_20200218-1721LH17h3_DalitzSignal_WithPrefilter_0.1-0.2/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_295_17d1_LF_296_LHC17h3_WithoutPrefilter/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_297_17d1_LF_298_LHC17h3_WithPrefilter/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_299_17d1_LF_300_LHC17h3_Prefilter0.1:0.3_SecMass0/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_302_17d1_LF_303_LHC17h3_Prefilter0.1:0.2_SecMass0/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_306_18h1_307_17d1_LF_308_17h3_PreFilter0.1:0.2_SecMass0_NewGen/AnalysisResults.root");
-  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals/AnalysisResults.root");
+  TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_309_LHC18h1_310_LHC17d1_lowField_311_LHC17h3_WithOutPreFilter_NewMissMatchSignals/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_312_LHC18h1_313_LHC17d1_LF_314_LHC17h3_widerPreFilter/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_315_LHC18h1_316_LHC17d1_LF_317_LHC17h3_without_Prefilter_primprecuts_pionmasscut/AnalysisResults.root");
-  TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_318_LHC18h1_319_LHC17d1_LF_320_LHC17h3_Prefilter_primprecuts_pionmasscut/AnalysisResults.root");
+  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_318_LHC18h1_319_LHC17d1_LF_320_LHC17h3_Prefilter_primprecuts_pionmasscut/AnalysisResults.root");
+  // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_321_LHC18h1_322_LHC17d1_LF_323_LHC17h3_SecSecPreFilter/AnalysisResults.root");
 
                                                                                 if(DoDebug) Printf("%d", __LINE__);
 
@@ -233,13 +209,14 @@ void ExtractSignal(){
 
   // Names of two pair histograms
   // TString VecPairHistoNames = "Ngen_pair_sameMother_photon_finalstate;Ngen_pair_sameMother_photon_secondary;Ngen_pair_sameMother_photon_secondaryfromMaterial;Ngen_pair_sameMother_photon_secondaryfromWD;Ngen_pair_UndefinedMother_photon_secondary;Ngen_pair_DifferentMother_photon_secondary;Ngen_pair_sameMother_photon_secondary_eta;Ngen_sameMother_eta;Ngen_pair_conversion;Ngen_pair_random;Ngen_pair_sameMother_pion";
-  TString VecPrimPairHistoNames = "Ngen_pair_sameMother_finalstate;Ngen_pair_differentMother_finalstate;Ngen_pair_UndefinedMother_finalstate;Ngen_pair_sameMother_photon_finalstate;Ngen_pair_sameMother_eta_finalstate;Ngen_pair_DifferentMother_eta_finalstate;Ngen_pair_UndefinedMother_eta_finalstate;Ngen_pair_sameMother_pion_finalstate;Ngen_pair_DifferentMother_pion_finalstate;Ngen_pair_UndefinedMother_pion_finalstate";
-  TString VecSecPairHistoNames = "Ngen_pair_sameMother_photon_secondary;Ngen_pair_sameMother_photon_secondaryfromMaterial;Ngen_pair_sameMother_photon_secondaryfromWD;Ngen_pair_UndefinedMother_photon_secondary;Ngen_pair_DifferentMother_photon_secondary;Ngen_pair_sameMother_photon_secondary_eta;Ngen_pair_conversion_secondary;Ngen_pair_random_secondary";
+  TString VecPrimPairHistoNames    = "Ngen_pair_sameMother_finalstate;Ngen_pair_DifferentMother_finalstate;Ngen_pair_UndefinedMother_finalstate;Ngen_pair_sameMother_photon_finalstate;Ngen_pair_sameMother_eta_finalstate;Ngen_pair_DifferentMother_eta_finalstate;Ngen_pair_UndefinedMother_eta_finalstate;Ngen_pair_sameMother_pion_finalstate;Ngen_pair_DifferentMother_pion_finalstate;Ngen_pair_UndefinedMother_pion_finalstate";
+  TString VecSecPairHistoNames     = "Ngen_pair_sameMother_photon_secondary;Ngen_pair_sameMother_photon_secondary_pion;Ngen_pair_sameMother_photon_secondary_eta;Ngen_pair_conversion_secondary;Ngen_pair_random_secondary;Ngen_pair_NotSameMother_secondary";
 
 
   // Names of reconstructed two pair histograms
-  TString VecPrimRecPairHistoNames = "Nrec_pair_sameMother_finalstate;Nrec_pair_differentMother_finalstate;Nrec_pair_UndefinedMother_finalstate;Nrec_pair_sameMother_photon_finalstate;Nrec_pair_sameMother_eta_finalstate;Nrec_pair_DifferentMother_eta_finalstate;Nrec_pair_UndefinedMother_eta_finalstate;;;Nrec_pair_sameMother_pion_finalstate;Nrec_pair_DifferentMother_pion_finalstate;Nrec_pair_UndefinedMother_pion_finalstate";
-  TString VecSecRecPairHistoNames = "Nrec_pair_sameMother_photon_secondary;Nrec_pair_sameMother_photon_secondaryfromMaterial;Nrec_pair_sameMother_photon_secondaryfromWD;Nrec_pair_UndefinedMother_photon_secondary;Nrec_pair_DifferentMother_photon_secondary;Nrec_pair_sameMother_photon_secondary_eta;Nrec_pair_conversion_secondary;Nrec_pair_random_secondary";
+  TString VecPrimRecPairHistoNames = "Nrec_pair_sameMother_finalstate;Nrec_pair_DifferentMother_finalstate;Nrec_pair_UndefinedMother_finalstate;Nrec_pair_sameMother_photon_finalstate;Nrec_pair_sameMother_eta_finalstate;Nrec_pair_DifferentMother_eta_finalstate;Nrec_pair_UndefinedMother_eta_finalstate";
+  // TString VecPrimRecPairHistoNames = "Nrec_pair_sameMother_finalstate;Nrec_pair_DifferentMother_finalstate;Nrec_pair_UndefinedMother_finalstate;Nrec_pair_sameMother_photon_finalstate;Nrec_pair_sameMother_eta_finalstate;Nrec_pair_DifferentMother_eta_finalstate;Nrec_pair_UndefinedMother_eta_finalstate;Nrec_pair_sameMother_pion_finalstate;Nrec_pair_DifferentMother_pion_finalstate;Nrec_pair_UndefinedMother_pion_finalstate";
+  TString VecSecRecPairHistoNames  = "Nrec_pair_sameMother_photon_secondary;Nrec_pair_sameMother_photon_secondary_pion;Nrec_pair_sameMother_photon_secondary_eta;Nrec_pair_conversion_secondary;Nrec_pair_random_secondary;Nrec_pair_NotSameMother_secondary";
 
 
   // Names of four pair histograms
@@ -253,7 +230,7 @@ void ExtractSignal(){
   TString VecRecFourPairHistoNames = "Nrec_FourElePair1_FinalState;Nrec_FourElePair1_FinalState_Dalitz";
 
   // Name of TH2 histograms where we do a mass projection and plot same and different mother pairs in one histogram
-  // First sameMother_Name , then differntMother_Name  (fistSignal: sameMother + differnetMother, secondSignal:  ...)  differentMother Hisots shouldn't be from a defined MotherSignal
+  // First sameMother_Name , then differntMother_Name  (fistSignal: sameMother + differnetMother, secondSignal:  ...)  DifferentMother Hisots shouldn't be from a defined MotherSignal
   // primary Hist names
   TString VecPrimGenSmearedMassCutHistoNames = "Ngen_pair_sameMother_finalstate;Ngen_pair_DifferentMother_finalstate;Ngen_pair_sameMother_pion_finalstate;Ngen_pair_DifferentMother_finalstate;Ngen_pair_sameMother_eta_finalstate;Ngen_pair_DifferentMother_finalstate";
   TString VecPrimRecMassCutHistoNames        = "Nrec_pair_sameMother_finalstate;Nrec_pair_DifferentMother_finalstate;Nrec_pair_sameMother_pion_finalstate;Nrec_pair_DifferentMother_finalstate;Nrec_pair_sameMother_eta_finalstate;Nrec_pair_DifferentMother_finalstate";
@@ -277,9 +254,14 @@ void ExtractSignal(){
 
 
   if (ExtPairSig == kTRUE) {
-    DoExtractPairSignal(VecPrimPairHistoNames, VecPrimRecPairHistoNames, PairPrimGenList, PairPrimGenSmearedList, PairRecPrimList[6], ExtGen, ExtGenSmeared, ExtRec, vec_rebin_pt, vec_rebin_mass, vec_proj_bin_pt, vec_proj_bin_mass);
-    DoExtractPairSignal(VecSecPairHistoNames,  VecSecRecPairHistoNames,  PairSecGenList,  PairSecGenSmearedList,  PairRecSecList[6],  ExtGen, ExtGenSmeared, ExtRec, vec_rebin_pt, vec_rebin_mass, vec_proj_bin_pt, vec_proj_bin_mass);
+    DoExtractPairSignal(VecPrimPairHistoNames, VecPrimRecPairHistoNames, PairPrimGenList, PairPrimGenSmearedList, PairRecPrimList[1], ExtGen, ExtGenSmeared, ExtRec, vec_rebin_pt, vec_rebin_mass, vec_proj_bin_pt, vec_proj_bin_mass);
+    DoExtractPairSignal(VecSecPairHistoNames,  VecSecRecPairHistoNames,  PairSecGenList,  PairSecGenSmearedList,  PairRecSecList[1],  ExtGen, ExtGenSmeared, ExtRec, vec_rebin_pt, vec_rebin_mass, vec_proj_bin_pt, vec_proj_bin_mass);
   }
+
+  if (PrimarySoBRatio == kTRUE) {
+    PlotPrimarySoBRatio(VecPrimRecPairHistoNames, PairRecPrimList, vec_rebin_pt, vec_rebin_mass, "Pair");
+  }
+
 
                                                                                 if(DoDebug) Printf("%d", __LINE__);
 
@@ -402,26 +384,19 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
   TCanvas *cProjPtEtaCanvas      = new TCanvas("cProjPtEtaCanvas" ,"",1600,1600);
   TCanvas *cSignalPionCanvas     = new TCanvas("cSignalPionCanvas","",1600,1600);
   TCanvas *cSignalEtaCanvas      = new TCanvas("cSignalEtaCanvas" ,"",1600,1600);
-  TCanvas *cRecTrueSignalPionCanvas  = new TCanvas("cRecTrueSignalPionCanvas" ,"",1600,1600);
-  TCanvas *cRecTrueSignalEtaCanvas   = new TCanvas("cRecTrueSignalEtaCanvas" ,"",1600,1600);
-  TCanvas *cRecTrueBackgroundCanvas  = new TCanvas("cRecTrueBackgroundCanvas" ,"",1600,1600);
   SetCanvasStandardSettings(cSignalCanvas);
   SetCanvasStandardSettings(cProjPtPionCanvas);
   SetCanvasStandardSettings(cProjPtEtaCanvas);
   SetCanvasStandardSettings(cSignalPionCanvas);
   SetCanvasStandardSettings(cSignalEtaCanvas);
-  SetCanvasStandardSettings(cRecTrueSignalPionCanvas);
-  SetCanvasStandardSettings(cRecTrueSignalEtaCanvas);
-  SetCanvasStandardSettings(cRecTrueBackgroundCanvas);
   cProjPtPionCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
   cProjPtEtaCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
   cSignalPionCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
   cSignalEtaCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
-  cRecTrueSignalPionCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
-  cRecTrueSignalEtaCanvas ->DivideSquare(vec_proj_bin_pt.size()-1);
-  cRecTrueBackgroundCanvas->DivideSquare(vec_proj_bin_pt.size()-1);
+
   TH1D* projX;
   TH1D* projY;
+
   Double_t startTextX         = .58;
   Double_t startTextY         = .84;
   Double_t textHeight         = 0.01;
@@ -450,16 +425,16 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
     SetHistoStandardSettingsBlue(hSignalOverBackgroundPtEta);
     for (size_t j = 0; j < vec_proj_bin_pt.size()-1;  j++) {      // loop over all pt projection intervalls
       for (size_t k = 0; k < vec_proj_bin_mass.size()-1; k++) {     // loop over all mass projection intervalls
-        TLatex *pT_Intervall    = new TLatex(startTextX, startTextY    , Form("#font[12]{p}_{T,ee} Intervall = %g - %g  #frac{GeV}{#font[12]{c}}",vec_proj_bin_pt.at(j) ,vec_proj_bin_pt.at(j+1)));
-        TLatex *mass_Intervall  = new TLatex(startTextX, startTextY-.05, Form("#font[12]{m}_{ee}  Intervall = %g - %g  #frac{GeV}{#font[12]{c^{2}}}",vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1)));
+        TLatex *pT_Intervall    = new TLatex(startTextX, startTextY    , Form("#font[12]{p}_{T,eeee} Intervall = %g - %g  #frac{GeV}{#font[12]{c}}",vec_proj_bin_pt.at(j) ,vec_proj_bin_pt.at(j+1)));
+        TLatex *mass_Intervall  = new TLatex(startTextX, startTextY-.05, Form("#font[12]{m}_{eeee}  Intervall = %g - %g  #frac{GeV}{#font[12]{c^{2}}}",vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1)));
         SetTextSettings(pT_Intervall,textSize);
         SetTextSettings(mass_Intervall,textSize);
         Int_t startbinX = VecHistos.at(iHist).GetXaxis()->FindBin(vec_proj_bin_mass[k]);    // select start bin of mass projection
         Int_t endbinX   = VecHistos.at(iHist).GetXaxis()->FindBin(vec_proj_bin_mass[k+1]);  // select end bin of mass projection
         Int_t startbinY = VecHistos.at(iHist).GetYaxis()->FindBin(vec_proj_bin_pt[j]);      // select start bin of pt projection
         Int_t endbinY   = VecHistos.at(iHist).GetYaxis()->FindBin(vec_proj_bin_pt[j+1]);    // select end bin of pt projection
-        projX = VecHistos.at(iHist).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(iHist).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY);  // Mass projection Histogram
-        projY = VecHistos.at(iHist).ProjectionY(Form("%s_ProjPt%g:%g_mass%g:%g",VecHistos.at(iHist).GetName(),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1)),startbinX,endbinX);  // Pt projection Histogram
+        projX = (TH1D*) VecHistos.at(iHist).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(iHist).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY)->Clone();  // Mass projection Histogram
+        projY = (TH1D*) VecHistos.at(iHist).ProjectionY(Form("%s_ProjPt%g:%g_mass%g:%g",VecHistos.at(iHist).GetName(),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1)),startbinX,endbinX)->Clone();  // Pt projection Histogram
         projX->RebinX(vec_rebin_mass.at(j));
         // projX->RebinY();
         projX->Sumw2();
@@ -470,80 +445,23 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
         // projX->Scale(1,"width");
         // projY->Scale(1,"width");
 
+
+
         //////////////////////////////////////////////////////////////////////////////
-        // Do projections of true reconstructed background and signal in pt slices
+        // MC TRUE SIGNAL AND BACKGROUNG: USED TO FIT DATA ; data = a*SignalHist + b*BackgroundHist
         //////////////////////////////////////////////////////////////////////////////
-        TH1D* projSB;
-        TH1D* projS;
-        TH1D* projSpion;
-        TH1D* projSeta;
-        TH1D* projB;
+        TH1D* fMCprojSB;
+        fMCprojSB = (TH1D*) VecHistos.at(0).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(0).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)) ,startbinY,endbinY)->Clone();  // Mass projection Histogram
+        fMCprojS  = (TH1D*) VecHistos.at(1).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(1).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY)->Clone();  // Mass projection Histogram
 
-        if (DoTrueSigBackFit == kTRUE) {
-          TPad* fSignalPionFitPad  = new TPad("pad1","pad1",0.0,0.0,1.0,1.0,0);
-          TPad* fSignalEtaFitPad   = new TPad("pad1","pad1",0.0,0.0,1.0,1.0,0);
-          TPad* fBackgroundFitPad  = new TPad("pad1","pad1",0.0,0.0,1.0,1.0,0);
+        fMCprojSB -> Add(fMCprojS,-1);
+        fMCprojB = fMCprojSB;
+        fMCprojS->RebinX(vec_rebin_mass.at(j));
+        fMCprojB->RebinX(vec_rebin_mass.at(j));
 
-          // if (VecHistos.at(iHist).GetName() == "Nrec_FourElePair1_FinalState_Dalitz") {
-          if (iHist == 1) {
-            projSB = VecHistos.at(0).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(0).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY);  // Mass projection Histogram
-            projS  = VecHistos.at(1).ProjectionX(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(1).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY);  // Mass projection Histogram
-            projSpion  = VecHistos.at(1).ProjectionX(Form("%s_ProjMassPion%g:%g_pt%g:%g",VecHistos.at(1).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY);  // Mass projection Histogram
-            projSeta   = VecHistos.at(1).ProjectionX(Form("%s_ProjMassEta%g:%g_pt%g:%g" ,VecHistos.at(1).GetName(),vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),startbinY,endbinY);  // Mass projection Histogram
-            fBackgroundFitPad -> cd();
-            // projB = (TH1D*) projSB -> Add(projS,-1);
-            projSB -> Add(projS,-1);
-            projB = projSB;
-            projB->RebinX(vec_rebin_mass.at(j));
-            projB->Draw();
-            TF1* fBackgroundPionFit = new TF1("fBackgroundPionFit","pol2",lowerPionMassRange,upperPionMassRange);
-            TF1* fBackgroundEtaFit  = new TF1("fBackgroundEtaFit" ,"pol2",lowerEtaMassRange,upperEtaMassRange);
-            // TF1* fBackgroundFit  = new TF1("fBackgroundFit" ,"pol2+expo(3)",0.,1.);
-            TF1* fBackgroundFit  = new TF1("fBackgroundFit" ,"pol2+expo(3)+pol2(5)",0.,1.);
-            // // TF1* fBackgroundFit  = new TF1("fBackgroundFit" ,"pol2+gaus(3)",0.3,0.8);
-            SetFitSettingsEtaBackground(fBackgroundFit);
-            fBackgroundPionFit->SetParameters(1,1,1);
-            fBackgroundEtaFit ->SetParameters(1,1,1);
-            fBackgroundFit ->SetParameters(1,1,1);
-            projB->Fit("fBackgroundPionFit" ,"QRMNE0","",lowerPionMassRange,upperPionMassRange);
-            projB->Fit("fBackgroundPionFit" ,"QRMNE0","",lowerPionMassRange,upperPionMassRange);
-            projB->Fit("fBackgroundEtaFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
-            projB->Fit("fBackgroundEtaFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
-            projB->Fit("fBackgroundFit" ,"QRMNE0","",0.4,0.7);
-            projB->Fit("fBackgroundFit" ,"QRMNE0","",0.4,0.7);
-            fBackgroundPionFit-> Draw("same");
-            fBackgroundEtaFit-> Draw("same");
-            fBackgroundFit-> Draw("same");
-            cRecTrueBackgroundCanvas->cd(j+1);
-            fBackgroundFitPad->Draw();
+        TF1* fMCHistFit = new TF1(Form("template2_ProjMass%g:%g_pt%g:%g",vec_proj_bin_mass.at(k),vec_proj_bin_mass.at(k+1),vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)),template2,0.,1.,2);
+        SetFitSettingsEtaBackground(fMCHistFit);
 
-            fSignalPionFitPad -> cd();
-            projSpion -> RebinX(vec_rebin_mass.at(j));
-            projSpion -> GetXaxis()->SetRangeUser(lowerPionMassRange,upperPionMassRange);
-            projSpion -> Draw();
-            TF1* fSignalPionFit = new TF1("fSignalPionFit","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerPionMassRange,upperPionMassRange);
-            SetFitSettingsPionSignal(fSignalPionFit);
-            fSignalPionFit->SetParameters(projS->GetMaximum()/2,0.135,0.025,0.4);
-            projSpion->Fit("fSignalPionFit","QRMNE0");
-            projSpion->Fit("fSignalPionFit","QRMNE0");
-            fSignalPionFit->Draw("same");
-            cRecTrueSignalPionCanvas->cd(j+1);
-            fSignalPionFitPad->Draw();
-
-            fSignalEtaFitPad -> cd();
-            projSeta -> RebinX(vec_rebin_mass.at(j));
-            projSeta -> GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);
-            projSeta -> Draw();
-            TF1* fSignalEtaFit = new TF1("fSignalEtaFit","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
-            SetFitSettingsPionSignal(fSignalEtaFit);
-            fSignalEtaFit->SetParameters(projS->GetMaximum()/2,0.547,0.025,0.4);
-            projSeta->Fit("fSignalEtaFit","QRMNE0");
-            projSeta->Fit("fSignalEtaFit","QRMNE0");
-            fSignalEtaFit->Draw("same");
-            cRecTrueSignalEtaCanvas->cd(j+1);
-            fSignalEtaFitPad->Draw();
-          }
-        }
 
 
 
@@ -644,7 +562,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
           if(ExtFourPairEtaSig == kTRUE){
             TPad* fProjPad = new TPad("pad1","pad1",0.0,0.0,1.0,1.0,0);
             TPad* fSigPad  = new TPad("pad1","pad1",0.0,0.0,1.0,1.0,0);
-            TLatex *massEta_Intervall  = new TLatex(startTextX, startTextY-.05, Form("#font[12]{m}_{ee}  Intervall = %g - %g  #frac{GeV}{#font[12]{c^{2}}}",lowerEtaMassRange,upperEtaMassRange));
+            TLatex *massEta_Intervall  = new TLatex(startTextX, startTextY-.05, Form("#font[12]{m}_{eeee}  Intervall = %g - %g  #frac{GeV}{#font[12]{c^{2}}}",lowerEtaMassRange,upperEtaMassRange));
             TH1D* projXeta  = (TH1D*) projX->Clone(Form("%s_ProjMass%g:%g_pt%g:%g",VecHistos.at(iHist).GetName(),lowerEtaMassRange,upperEtaMassRange,vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)));
             TH1D* fSignalEta = (TH1D*) projXeta->Clone(Form("%s_SignalEta%g:%g_pt%g:%g",VecHistos.at(iHist).GetName(),lowerEtaMassRange,upperEtaMassRange,vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)));
             SetTextSettings(massEta_Intervall,textSize);
@@ -652,48 +570,60 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             fSignalEta->SetTitle(Form("Signal in Pt Intervall %g-%g #frac{GeV}{#font[12]{c}}",vec_proj_bin_pt.at(j),vec_proj_bin_pt.at(j+1)));
             fProjPad->cd();
             projXeta->GetYaxis()->SetRangeUser(0.,(projXeta->GetMaximum()+projXeta->GetBinError(projXeta->GetMaximumBin()))*1.2);
-            // projXeta->SetAxisRange(0, (projXeta->GetMaximum()+projXeta->GetBinError(projXeta->GetMaximumBin()))*1.2, "Y");
-            projXeta->Draw();
+            // // projXeta->SetAxisRange(0, (projXeta->GetMaximum()+projXeta->GetBinError(projXeta->GetMaximumBin()))*1.2, "Y");
             projXeta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);
+            projXeta->Draw();
 
-
-
-
-            // // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
-            TF1 *fEtaFit = new TF1("fEtaFit","pol2+(x<[4])*([3]*(TMath::Exp(-0.5*((x-[4])/[5])^2)+TMath::Exp((x-[4])/[6])*(1.-TMath::Exp(-0.5*((x-[4])/[5])^2))))+(x>=[4])*([3]*TMath::Exp(-0.5*((x-[4])/[5])^2))",lowerEtaMassRange,upperEtaMassRange);
-            // // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
+            // TF1 *fEtaFit = new TF1("fEtaFit","pol2+gaus(3)",lowerEtaMassRange,upperEtaMassRange);
+            TF1 *fEtaFit = new TF1("fEtaFit","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))+pol2(4)+expo(7)",lowerEtaMassRange,upperEtaMassRange);
+            // TF1* fSignalFit = new TF1("fSignalEta","gaus",lowerEtaMassRange,upperEtaMassRange);
             TF1* fSignalFit = new TF1("fSignalEta","(x<[1])*([0]*(TMath::Exp(-0.5*((x-[1])/[2])^2)+TMath::Exp((x-[1])/[3])*(1.-TMath::Exp(-0.5*((x-[1])/[2])^2))))+(x>=[1])*([0]*TMath::Exp(-0.5*((x-[1])/[2])^2))",lowerEtaMassRange,upperEtaMassRange);
-            TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,3);
-            // TF1* fBackgroundFit = new TF1("fBackgroundEta","pol2",lowerEtaMassRange,upperEtaMassRange);
+            // TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,3);
+            TF1* fBackgroundFit = new TF1("fBackgroundFit",BackgroundFunction,lowerEtaMassRange,upperEtaMassRange,5);
+            // TF1* fBackgroundFit = new TF1("fBackgroundFit","pol2",lowerEtaMassRange,upperEtaMassRange);
             SetFitSettingsEta(fEtaFit);
             SetFitSettingsEta(fSignalFit);
             SetFitSettingsEtaBackground(fBackgroundFit);
             if(DoFit == kTRUE){
-              fBackgroundFit->SetParameters(1,1,1);
-              reject = kTRUE;
-              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
-              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
-              projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
-              reject = kFALSE;
+              if (DoTemplateFit == kFALSE) {
+                fBackgroundFit->SetParameters(1,1,1,1,1);
+                reject = kTRUE;
+                projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
+                projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
+                projXeta->Fit("fBackgroundFit" ,"QRMNE0","",lowerEtaMassRange,upperEtaMassRange);
+                reject = kFALSE;
 
-              // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
-              fEtaFit->SetParameters(fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2),projXeta->GetMaximum()/2,0.547,0.01,0.4);
-              // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
-              // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
-              fEtaFit->FixParameter(0,fBackgroundFit->GetParameter(0));
-              fEtaFit->FixParameter(1,fBackgroundFit->GetParameter(1));
-              fEtaFit->FixParameter(2,fBackgroundFit->GetParameter(2));
-              fEtaFit->SetParLimits(4,0.544,0.55);
-              // fEtaFit->SetParLimits(5,0.0,0.01);
-              fEtaFit->SetParLimits(6,0,1);
-              projXeta->Fit("fEtaFit","QRMNE0");
-              projXeta->Fit("fEtaFit","QRMNE0");
-              projXeta->Fit("fEtaFit","QRMNE0");
+                // fEtaFit->SetParameters(0,0.018,0.01,projXeta->GetMaximum()/2,0.547,0.01,0.4);
+                fEtaFit->SetParameters(projXeta->GetMaximum()/2,0.547,0.01,0.4,fBackgroundFit->GetParameter(0),fBackgroundFit->GetParameter(1),fBackgroundFit->GetParameter(2));
+                // // fEtaFit->SetParLimits(4,0.53,0.565);  // (*)
+                // // fEtaFit->SetParLimits(5,0.0,0.02);    // (*)
+                fEtaFit->SetParLimits(1,0.54,0.56);
+                fEtaFit->SetParLimits(2,0.0,0.1);
+                fEtaFit->SetParLimits(3,0,2);
+                fEtaFit->FixParameter(4,fBackgroundFit->GetParameter(0));
+                fEtaFit->FixParameter(5,fBackgroundFit->GetParameter(1));
+                fEtaFit->FixParameter(6,fBackgroundFit->GetParameter(2));
+                fEtaFit->FixParameter(7,fBackgroundFit->GetParameter(3));
+                fEtaFit->FixParameter(8,fBackgroundFit->GetParameter(4));
+                projXeta->Fit("fEtaFit","QRMNE0");
+                projXeta->Fit("fEtaFit","QRMNE0");
+                projXeta->Fit("fEtaFit","QRMNE0");
 
-              fSignalFit->SetParameters(fEtaFit->GetParameter(3),fEtaFit->GetParameter(4),fEtaFit->GetParameter(5),fEtaFit->GetParameter(6));
-              fEtaFit->Draw("same");
-              fSignalFit    -> Draw("same");
-              fBackgroundFit-> Draw("same");
+                fSignalFit->SetParameters(fEtaFit->GetParameter(0),fEtaFit->GetParameter(1),fEtaFit->GetParameter(2),fEtaFit->GetParameter(3));
+                fEtaFit->Draw("same");
+                fSignalFit    -> Draw("same");
+                fBackgroundFit-> Draw("same");
+              }
+
+              if (DoTemplateFit == kTRUE) {
+                fMCHistFit->SetParameter(0,0.9);
+                fMCHistFit->SetParameter(1,0.9);
+                projXeta->Fit(fMCHistFit,"IN");
+                fMCHistFit -> Draw("same CL");
+                fMCprojB   -> Draw("same CL");
+                fMCprojS   -> Draw("same CL");
+              }
+
             }
             pT_Intervall  -> Draw("same");
             cSignalCanvas -> cd();
@@ -701,49 +631,86 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
             cSignalCanvas -> SaveAs(Form("%s%s_Eta.pdf",DocumentPathProjX.Data(), projXeta->GetName()));
 
             cProjPtEtaCanvas->cd(j+1);
-            fProjPad->Draw();
+            if(DoTemplateFit == kFALSE) fProjPad->Draw();
+            if(DoTemplateFit == kTRUE)  fProjPad->DrawClone();
 
             // Substract background
-            for (int iBin = 1; iBin <= projXeta->GetNbinsX(); iBin++) {
-              Double_t binCenter = projXeta->GetBinCenter(iBin);
-              Double_t fitValue  = fBackgroundFit->Eval(binCenter);
-              Double_t newBinContent = projXeta->GetBinContent(iBin) - fitValue;
-              fSignalEta->SetBinContent(iBin, newBinContent);
+            if (DoTemplateFit == kFALSE) {
+              for (int iBin = 1; iBin <= projXeta->GetNbinsX(); iBin++) {
+                Double_t binCenter = projXeta->GetBinCenter(iBin);
+                Double_t fitValue  = fBackgroundFit->Eval(binCenter);
+                Double_t newBinContent = projXeta->GetBinContent(iBin) - fitValue;
+                fSignalEta->SetBinContent(iBin, newBinContent);
+              }
+              SetMultipleHistoStandardSettings(fSignalEta);
+
+              TAxis *xAxis = fSignalEta->GetXaxis();
+              // Double_t lowerIntEdge = fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2);
+              Double_t lowerIntEdge = 0.45;
+              Double_t upperIntEdge = fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2);
+              Int_t binLowerSigmaEdge   = xAxis->FindBin(lowerIntEdge);
+              Int_t binUpperSigmaEdge   = xAxis->FindBin(upperIntEdge);
+              Double_t fSignalValue     = fSignalEta->Integral(binLowerSigmaEdge,binUpperSigmaEdge);
+              // Double_t fBackgroundValue = fBackgroundFit->Integral(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
+              Double_t fBackgroundValue = 0;
+              for (int iSigmaBins = 0; iSigmaBins < (binUpperSigmaEdge-binLowerSigmaEdge); iSigmaBins++) {
+                fBackgroundValue = fBackgroundValue + fBackgroundFit->Eval(projXeta->GetBinCenter(binLowerSigmaEdge+iSigmaBins));
+              }
+              Double_t fSignalOverBackground = fSignalValue/fBackgroundValue;
+              TLatex *fTextSigBack    = new TLatex(startTextX+0.15, startTextY    , Form("#frac{S}{B} = %g", fSignalOverBackground));
+              SetTextSettings(fTextSigBack,textSize);
+
+              fSigPad->cd();
+              fSignalEta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);  // Range of x-Axis should be the same of the fit region
+              // fSignalEta->GetYaxis()->SetRangeUser((fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.2,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.2);
+              TLine* fLowerSigmaLine = new TLine(lowerIntEdge,(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,lowerIntEdge,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
+              TLine* fUpperSigmaLine = new TLine(upperIntEdge,(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,upperIntEdge,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
+              SetSigmaLineSettings(fLowerSigmaLine);
+              SetSigmaLineSettings(fUpperSigmaLine);
+              fSignalEta->Draw();
+              fSignalFit->Draw("same");
+              fTextSigBack->Draw("same");
+              fLowerSigmaLine->Draw("same");
+              fUpperSigmaLine->Draw("same");
+              cSignalCanvas->cd();
+              fSigPad->Draw();
+              cSignalCanvas -> SaveAs(Form("%s%s.pdf",DocumentPathSignals.Data(), fSignalEta->GetName()));
+              cSignalEtaCanvas->cd(j+1);
+              fSigPad->Draw();
+              Vec_SigBack_Eta.push_back(fSignalOverBackground);
             }
-            SetMultipleHistoStandardSettings(fSignalEta);
 
-            TAxis *xAxis = fSignalEta->GetXaxis();
-            Int_t binLowerSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2));
-            Int_t binUpperSigmaEdge   = xAxis->FindBin(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
-            Double_t fSignalValue     = fSignalEta->Integral(binLowerSigmaEdge,binUpperSigmaEdge);
-            // Double_t fBackgroundValue = fBackgroundFit->Integral(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2));
-            Double_t fBackgroundValue = 0;
-            for (int iSigmaBins = 0; iSigmaBins < (binUpperSigmaEdge-binLowerSigmaEdge); iSigmaBins++) {
-              fBackgroundValue = fBackgroundValue + fBackgroundFit->Eval(projXeta->GetBinCenter(binLowerSigmaEdge+iSigmaBins));
+            if (DoTemplateFit == kTRUE) {
+              //----------------------------
+              Double_t lowerIntEdge = fMCprojS->GetXaxis()->FindBin(0.45);
+              Double_t upperIntEdge = fMCprojS->GetXaxis()->FindBin(0.61);
+              Double_t fSignalValue     = fMCHistFit->GetParameter(0)*(fMCprojS->Integral(lowerIntEdge,upperIntEdge));
+              Double_t fBackgroundValue = fMCHistFit->GetParameter(1)*(fMCprojB->Integral(lowerIntEdge,upperIntEdge));
+
+              Double_t fSignalOverBackground = fSignalValue/fBackgroundValue;
+              if (fSignalOverBackground > 100) fSignalOverBackground = 0;
+              TLatex *fTextSigBack    = new TLatex(startTextX+0.15, startTextY    , Form("#frac{S}{B} = %g", fSignalOverBackground));
+              SetTextSettings(fTextSigBack,textSize);
+
+              fSigPad->cd();
+              fMCprojS->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);  // Range of x-Axis should be the same of the fit region
+              TLine* fLowerIntLine = new TLine(lowerIntEdge,(fMCprojS->GetMinimum()-fMCprojS->GetBinError(fMCprojS->GetMinimumBin()))*1.05,upperIntEdge,(fMCprojS->GetMaximum()+fMCprojS->GetBinError(fMCprojS->GetMaximumBin()))*1.05);
+              TLine* fUpperIntLine = new TLine(lowerIntEdge,(fMCprojS->GetMinimum()-fMCprojS->GetBinError(fMCprojS->GetMinimumBin()))*1.05,upperIntEdge,(fMCprojS->GetMaximum()+fMCprojS->GetBinError(fMCprojS->GetMaximumBin()))*1.05);
+              SetSigmaLineSettings(fLowerIntLine);
+              SetSigmaLineSettings(fUpperIntLine);
+              TF1 *fDummy = new TF1 ("fDummy", "1", -100., 100.);
+              fMCprojS->Multiply(fDummy,fMCHistFit->GetParameter(0));
+              fMCprojS->Draw();
+              fTextSigBack->Draw("same");
+              fLowerIntLine->Draw("same");
+              fUpperIntLine->Draw("same");
+              cSignalCanvas->cd();
+              fSigPad->Draw();
+              cSignalCanvas -> SaveAs(Form("%s%s.pdf",DocumentPathSignals.Data(), fMCprojS->GetName()));
+              cSignalEtaCanvas->cd(j+1);
+              fSigPad->Draw();
+              Vec_SigBack_Eta.push_back(fSignalOverBackground);
             }
-            Double_t fSignalOverBackground = fSignalValue/fBackgroundValue;
-            TLatex *fTextSigBack    = new TLatex(startTextX+0.15, startTextY    , Form("#frac{S}{B} = %g", fSignalOverBackground));
-            SetTextSettings(fTextSigBack,textSize);
-
-            fSigPad->cd();
-            fSignalEta->GetXaxis()->SetRangeUser(lowerEtaMassRange,upperEtaMassRange);  // Range of x-Axis should be the same of the fit region
-            // fSignalEta->GetYaxis()->SetRangeUser((fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.2,(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.2);
-            TLine* fLowerSigmaLine = new TLine(fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)-3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
-            TLine* fUpperSigmaLine = new TLine(fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMinimum()-fSignalEta->GetBinError(fSignalEta->GetMinimumBin()))*1.05,fSignalFit->GetParameter(1)+3*fSignalFit->GetParameter(2),(fSignalEta->GetMaximum()+fSignalEta->GetBinError(fSignalEta->GetMaximumBin()))*1.05);
-            SetSigmaLineSettings(fLowerSigmaLine);
-            SetSigmaLineSettings(fUpperSigmaLine);
-            fSignalEta->Draw();
-            fSignalFit->Draw("same");
-            fTextSigBack->Draw("same");
-            fLowerSigmaLine->Draw("same");
-            fUpperSigmaLine->Draw("same");
-            cSignalCanvas->cd();
-            fSigPad->Draw();
-            cSignalCanvas -> SaveAs(Form("%s%s.pdf",DocumentPathSignals.Data(), fSignalEta->GetName()));
-            cSignalEtaCanvas->cd(j+1);
-            fSigPad->Draw();
-
-            Vec_SigBack_Eta.push_back(fSignalOverBackground);
           }
 
 
@@ -810,14 +777,6 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
       cProjPtEtaCanvas  -> SaveAs(Form("%s%s_Eta.pdf",DocumentPathProjX.Data(), "AllPtProjections"));
       cSignalEtaCanvas  -> SaveAs(Form("%s%s_Eta.pdf",DocumentPathSignals.Data(), "AllSignals"));
     }
-    // if (VecHistos.at(iHist).GetName() == "Nrec_FourElePair1_FinalState_Dalitz") {
-    if (iHist == 1){
-      TString DocumentPathProjS   = Form("Plots/%s/%s/%s/Mass_Projectoion/",TrainNumber.Data(),PairCase.Data(),VecHistos.at(1).GetName());
-      TString DocumentPathProjB   = Form("Plots/%s/%s/%s/Mass_Projectoion/",TrainNumber.Data(),PairCase.Data(),VecHistos.at(0).GetName());
-      cRecTrueSignalPionCanvas -> SaveAs(Form("%sTrueSignalPionFit.pdf",DocumentPathProjS.Data()));
-      cRecTrueSignalEtaCanvas  -> SaveAs(Form("%sTrueSignalEtaFit.pdf" ,DocumentPathProjS.Data()));
-      cRecTrueBackgroundCanvas -> SaveAs(Form("%sTrueBackgroundFit.pdf",DocumentPathProjB.Data()));
-    }
 
                                                                                 if(DoDebug) Printf("%d", __LINE__);
     if (DoSignalOverBackground == kTRUE) {
@@ -868,6 +827,104 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
 
 
 
+void PlotPrimarySoBRatio(TString VecRecPairHistoNames, std::vector<TList*> PairRecPrimList, std::vector<Int_t> vec_rebin_pt, std::vector<Int_t> vec_rebin_mass, TString PairCase) {
+                                                                                if(DoDebug)  std::cout << "Start plotting of S/B ratio for primary pairs" << std::endl;
+  TCanvas *cSoBCanvas = new TCanvas("cSoBCanvas","",800,800);
+  SetCanvasStandardSettings(cSoBCanvas);
+  TPad *pad1 = new TPad("pad1","pad1",0,0.3,1,1);
+  pad1->SetBottomMargin(0);
+  pad1->Draw();
+  cSoBCanvas->cd();
+  TPad *pad2 = new TPad("pad2","pad2",0,0,1,0.3);
+  pad2->SetTopMargin(0);
+  pad2->Draw();
+  pad2->cd();
+
+  for (size_t iRecPairList = 0; iRecPairList < PairRecPrimList.size(); iRecPairList++) {
+    TList* PairRecList = PairRecPrimList.at(iRecPairList);
+    TObjArray* arrPrimaryPairHistoNames=VecRecPairHistoNames.Tokenize(";");
+    const Int_t nPairTH2hist=arrPrimaryPairHistoNames->GetEntriesFast();
+    TString DocumentPath = Form("Plots/%s/%s/%s/%s/",TrainNumber.Data(),PairCase.Data(),"SoB",PairRecList->GetName());
+    gSystem->Exec(Form("mkdir -p %s",DocumentPath.Data()));
+
+    // TH2 Histograms
+    TH2D* hFullULSHist;
+    TH2D* hEtaSignal;
+    TH2D* hPionSignal;
+    TH2D* hULSminusSignals;
+    // TH1 Projections
+    TH1D* hProjFullULSHist;
+    TH1D* hProjEtaSignal;
+    TH1D* hProjPionSignal;
+    TH1D* hProjULSminusSignals;
+
+    for (Int_t i = 0; i < nPairTH2hist; i++) {
+      TString temp = arrPrimaryPairHistoNames->At(i)->GetName();
+      // selecting specific Histograms
+      if (temp == "Nrec_pair_UndefinedMother_finalstate") hFullULSHist     = (dynamic_cast<TH2D*>(PairRecList->FindObject(temp)));
+      if (temp == "Nrec_pair_sameMother_eta_finalstate" ) hEtaSignal       = (dynamic_cast<TH2D*>(PairRecList->FindObject(temp)));
+      // if (temp == "Nrec_pair_sameMother_pion_finalstate") hPionSignal      = (dynamic_cast<TH2D*>(PairRecList->FindObject(temp)));
+      if (temp == "Nrec_pair_UndefinedMother_finalstate") hULSminusSignals = (dynamic_cast<TH2D*>(PairRecList->FindObject(temp)));
+    }
+
+    Double_t fProjStartBin = hFullULSHist->GetXaxis()->FindBin(0.);
+    Double_t fProjEndBin   = hFullULSHist->GetXaxis()->FindBin(4.);
+    hProjFullULSHist     = hFullULSHist     -> ProjectionX("ProjXFullULSHist",     fProjStartBin, fProjEndBin);
+    hProjEtaSignal       = hEtaSignal       -> ProjectionX("ProjXEtaSignal",       fProjStartBin, fProjEndBin);
+    // hProjPionSignal      = hPionSignal      -> ProjectionX("ProjXPionSignal",      fProjStartBin, fProjEndBin);
+    hProjULSminusSignals = hULSminusSignals -> ProjectionX("ProjXULSminusSignals", fProjStartBin, fProjEndBin);
+
+    hProjULSminusSignals->Add(hProjEtaSignal,-1);
+    // hProjULSminusSignals->Add(hProjPionSignal,-1);
+
+    SetHistoStandardSettings(hProjFullULSHist);
+    SetHistoStandardSettingsBlue(hProjEtaSignal);
+    // SetHistoStandardSettingsRed(hProjPionSignal);
+    SetHistoStandardSettingsGreen(hProjULSminusSignals);
+
+    // hProjFullULSHist     -> RebinX(vec_rebin_mass.at(0));
+    // hProjEtaSignal       -> RebinX(vec_rebin_mass.at(0));
+    // hProjPionSignal      -> RebinX(vec_rebin_mass.at(0));
+    // hProjULSminusSignals -> RebinX(vec_rebin_mass.at(0));
+
+    hProjFullULSHist->GetYaxis()->SetTitle("Counts");
+
+    // Set Legend + Legend settings
+    auto legend = new TLegend(0.9,0.65,0.55,0.9);
+    TLegendEntry *entry1=legend->AddEntry("name","Sum, undefined Mother","p");        // Legend with Line, same Mother
+    // TLegendEntry *entry2=legend->AddEntry("name","Pion, same Mother","p");   // Legend with Line, different Mother
+    TLegendEntry *entry3=legend->AddEntry("name","Eta, same Mother","p");   // Legend with Line, different Mother
+    TLegendEntry *entry4=legend->AddEntry("name","Background, (Sum-Eta)","p");   // Legend with Line, different Mother
+    entry1->SetMarkerColor(kBlack);
+    // entry2->SetMarkerColor(kRed);
+    entry3->SetMarkerColor(kBlue);
+    entry4->SetMarkerColor(kGreen);
+
+    pad1->cd();
+    pad1->SetLogy();
+    hProjFullULSHist->Draw("");
+    hProjEtaSignal->DrawClone("same");
+    // hProjPionSignal->Draw("same");
+    hProjULSminusSignals->Draw("same");
+    legend->Draw("same");
+
+    pad2->cd();
+    hProjEtaSignal->Divide(hProjULSminusSignals);
+    hProjEtaSignal->SetMarkerStyle(21);
+    hProjEtaSignal->GetYaxis()->SetTitle("Ratio S/B");
+    hProjEtaSignal->Draw("ep");
+
+    cSoBCanvas->SaveAs(Form("%sPrimaryPairSoB.pdf",DocumentPath.Data()));
+  }
+  delete cSoBCanvas;
+}
+
+
+
+
+
+
+
 
 void MergeMassCutHistos(TList* PairList, TString VecMassCutHistoNames, TString VecMassCutHistoTitles, TString PairCase, double MassCut, Bool_t DoCutEff){
   // Create path to save output
@@ -888,7 +945,7 @@ void MergeMassCutHistos(TList* PairList, TString VecMassCutHistoNames, TString V
 
   for (Int_t i = 0; i < nMassCutTH2hist; i+=2) {  // i+=2 caused by the order of names in arrMassCutHistoNames. (fistSignal: sameMother + differnetMother, secondSignal:  ...)
     TString temp1 = arrMassCutHistoNames->At(i)->GetName();    // using sameMotherHisto
-    TString temp2 = arrMassCutHistoNames->At(i+1)->GetName();  // using differentMotherHisto
+    TString temp2 = arrMassCutHistoNames->At(i+1)->GetName();  // using DifferentMotherHisto
     std::cout << temp1 <<" " << temp2 << std::endl;
     // select both Histos from PairList out of File
     TH2D hTempSameMotherHist     = *(dynamic_cast<TH2D*>(PairList->FindObject(temp1)));
@@ -945,8 +1002,8 @@ void MergeMassCutHistos(TList* PairList, TString VecMassCutHistoNames, TString V
     hXProj_DiffMotherHist->Draw("same");
     cutLine.Draw();
     legend->Draw();
-    // cSignalCanvas->SaveAs(Form("%sSameDiffernetMother%s.pdf",DocumentPath.Data(),name.Data()));
-    cSignalCanvas->SaveAs(Form("%sSameDiffernetMother%s.png",DocumentPath.Data(),name.Data()));
+    cSignalCanvas->SaveAs(Form("%sSameDiffernetMother%s.pdf",DocumentPath.Data(),name.Data()));
+    // cSignalCanvas->SaveAs(Form("%sSameDiffernetMother%s.png",DocumentPath.Data(),name.Data()));
 
 
     // Setting Y axis range and use same range for a vertical cut line
@@ -965,8 +1022,8 @@ void MergeMassCutHistos(TList* PairList, TString VecMassCutHistoNames, TString V
     cutLine.Draw();
     legend->Draw();
     cLogYCanvas->SetLogy();
-    // cLogYCanvas->SaveAs(Form("%sLogYSameDiffernetMother%s.pdf",DocumentPath.Data(),name.Data()));
-    cLogYCanvas->SaveAs(Form("%sLogYSameDiffernetMother%s.png",DocumentPath.Data(),name.Data()));
+    cLogYCanvas->SaveAs(Form("%sLogYSameDiffernetMother%s.pdf",DocumentPath.Data(),name.Data()));
+    // cLogYCanvas->SaveAs(Form("%sLogYSameDiffernetMother%s.png",DocumentPath.Data(),name.Data()));
 
     if (DoCutEff == kTRUE) {
       // Initialise Histogram
