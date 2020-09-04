@@ -31,7 +31,7 @@ Bool_t doSoB          = kTRUE;
 Bool_t doSignificance = !doSoB;
 
 // Bool to plot Dalitz and GammaGamma hisograms from 2 different  Trains (toal: 4 histos)
-Bool_t CompDiffTrains = kFALSE;
+Bool_t CompDiffTrains = kTRUE;
 
 // TString rebinCase = "rebin50";
 TString rebinCase = "rebin20";
@@ -110,6 +110,8 @@ void PlotTwoHistograms() {
     hist1->SetLineColor(kBlue);   hist1->SetLineWidth(2);
     hist2->SetLineColor(kRed);    hist2->SetLineWidth(2);
 
+    hist1->GetXaxis()->SetTitleOffset(1.4);
+    hist2->GetXaxis()->SetTitleOffset(1.4);
     hist1->GetYaxis()->SetTitleOffset(1.2);
     hist2->GetYaxis()->SetTitleOffset(1.2);
 
@@ -124,23 +126,29 @@ void PlotTwoHistograms() {
     // Double_t yAxis1Hist = hist1->GetYaxis()->GetXmax();
     Double_t yAxis1Hist = hist1->GetMaximum();
     // Double_t yAxis2Hist = hist2->GetYaxis()->GetXmax();
-    Double_t yAxis2Hist = hist2->GetMaximum();
-    // Double_t yAxis2Hist = hist3->GetMaximum();
+    Double_t yAxis2Hist;
+    if (!CompDiffTrains) yAxis2Hist = hist2->GetMaximum();
+    if (CompDiffTrains)  yAxis2Hist = hist3->GetMaximum();
                                                                                 if(DoDebug) Printf("%d", __LINE__);
-
-    auto legend = new TLegend(0.15,0.75,0.39,0.89);
-    TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec","l");
-    // TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec with m^{prim}_{ee} 0.0-0.35","l");
-    // TLegendEntry *entry1=legend->AddEntry(hist1,"#splitline{Dalitz Rec}{with m^{prim}_{ee} 0.0-0.35}","l");
-    TLegendEntry *entry2=legend->AddEntry(hist2,"#gamma #gamma Rec","l");
+    Double_t x_low; Double_t y_low; Double_t x_max; Double_t y_max;
+    if (!CompDiffTrains) {x_low = 0.15; y_low = 0.75; x_max = 0.39; y_max = 0.89;}
+    if (CompDiffTrains)  {x_low = 0.12; y_low = 0.65; x_max = 0.39; y_max = 0.89;}
+    auto legend = new TLegend(x_low,y_low,x_max,y_max);
+    if (!CompDiffTrains) {
+      TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec","l");
+      TLegendEntry *entry2=legend->AddEntry(hist2,"#gamma #gamma Rec","l");
+    }
     if(CompDiffTrains){
-      TLegendEntry *entry3=legend->AddEntry(hist3,"Dalitz Rec with m^{prim}_{ee} 0.1-0.2","l");
-      // TLegendEntry *entry3=legend->AddEntry(hist3,"#splitline{Dalitz Rec}{with m^{prim}_{ee} 0.1-0.2}","l");
+      TLegendEntry *entry1=legend->AddEntry(hist1,"#splitline{Dalitz Rec}{0.0 < m^{prim}_{ee} < 0.35 #frac{GeV}{c^{2}}}","l");
+      // TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec with m^{prim}_{ee} 0.0-0.35","l");
+      // TLegendEntry *entry3=legend->AddEntry(hist3,"Dalitz Rec with m^{prim}_{ee} 0.1-0.2","l");
+      TLegendEntry *entry3=legend->AddEntry(hist3,"#splitline{Dalitz Rec}{0.1 < m^{prim}_{ee} < 0.2 #frac{GeV}{c^{2}}}","l");
       // TLegendEntry *entry4=legend->AddEntry(hist4,"#gamma #gamma Rec","l");
     }
     legend->SetBorderSize(0);
     legend->SetFillColorAlpha(0, 0.0);
-    legend->SetTextSize(0.04);
+    if (!CompDiffTrains) legend->SetTextSize(0.05);
+    if (CompDiffTrains) legend->SetTextSize(0.035);
                                                                                 if(DoDebug) Printf("%d", __LINE__);
 
     TString HistName = arrFileHistNames->At(iHist)->GetName();
@@ -151,7 +159,7 @@ void PlotTwoHistograms() {
 
                                                                                 if(DoDebug) Printf("%d", __LINE__);
 
-    auto legendInfo = new TLegend(0.42,0.7,0.85,0.89);
+    auto legendInfo = new TLegend(0.5,0.65,0.85,0.89);
     TLegendEntry *entry5=legendInfo->AddEntry("collisionSystem"   ,"pp, #sqrt{s} = 13 TeV, |#eta_{e}| < 0.8","");
     TLegendEntry *entry6=legendInfo->AddEntry("SinglePtPrim","#font[12]{p}_{T,e}^{prim} > 0.075 GeV/#font[12]{c}","");
     TLegendEntry *entry7=legendInfo->AddEntry("SinglePtSec","#font[12]{p}_{T,e}^{sec} > 0.02 GeV/#font[12]{c}","");
@@ -159,7 +167,7 @@ void PlotTwoHistograms() {
     TLegendEntry *entry8=legendInfo->AddEntry("FourPairPt"   ,Form("%s < #font[12]{p}_{T,eeee} < %s  GeV/#font[12]{c}",arrayPtIntervall->At(0)->GetName() ,arrayPtIntervall->At(1)->GetName()),"");
     legendInfo->SetBorderSize(0);
     legendInfo->SetFillColorAlpha(0, 0.0);
-    legendInfo->SetTextSize(0.035);
+    legendInfo->SetTextSize(0.04);
 
     cSignalCanvas->cd(iHist+1);
                                                                                 if(DoDebug) Printf("%d", __LINE__);
@@ -174,13 +182,14 @@ void PlotTwoHistograms() {
   }
   // cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_PrimSec_GammaGamma/%s.pdf",DataFolder.Data(),arrFileHistNames->At(iHist)->GetName()));
 
+  TString CompareCase;  if(!CompDiffTrains) CompareCase = "DDYY"; if(CompDiffTrains) CompareCase = "DD0.0-0.35&0.1-0.2";
   if (output_PDF) {
-    if(doSoB)          cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignalOverBackground_Eta_%s.pdf",DataFolder.Data(),rebinCase.Data()));
-    if(doSignificance) cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignificance_Eta_%s.pdf",DataFolder.Data(),rebinCase.Data()));
+    if(doSoB)          cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignalOverBackground_Eta_%s%s.pdf",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));
+    if(doSignificance) cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignificance_Eta_%s%s.pdf",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));
   }
   if (output_PNG) {
-    if(doSoB)          cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignalOverBackground_Eta_%s.png",DataFolder.Data(),rebinCase.Data()));
-    if(doSignificance) cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignificance_Eta_%s.png",DataFolder.Data(),rebinCase.Data()));
+    if(doSoB)          cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignalOverBackground_Eta_%s%s.png",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));
+    if(doSignificance) cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignificance_Eta_%s%s.png",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));
   }
 
 }

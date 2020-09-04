@@ -41,7 +41,7 @@ Bool_t ExtFourPairEtaSig      = kTRUE;
   Bool_t ExtGenSmeared          = kFALSE;    // Extract Generated Smeared Signal
   Bool_t ExtRec                 = kTRUE;    // Extract Reconstructed Signal
 
-Bool_t ExtDielectronPairSpectra = kTRUE;  // Extract the TH2 mass vs pt histogram from the reconstructed dielectron pairs
+Bool_t ExtDielectronPairSpectra = kFALSE;  // Extract the TH2 mass vs pt histogram from the reconstructed dielectron pairs
 
 Bool_t ExtPreFilterSpectra    = kFALSE;     // Extract the Prefilter histograms before and after the prefilters are applied
 
@@ -73,8 +73,8 @@ double MassCutSecondary = 0.01;
 // TString TrainNumber = "merged_376_LHC17d1_LF_377_LHC17h3_378_LHC18h1_Dalitz_withoutPreFilter_NoMassCut";
 // TString TrainNumber = "merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel";
 // TString TrainNumber = "merged_408_LHC18H1_409_LHC17h3_410_LHC17d1_LF_Dalitz_GammaGamma_noMassCut_withPrefilter";
-TString TrainNumber = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
-// TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
+// TString TrainNumber = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
+TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
 
 
 void ExtractSignal(){
@@ -921,8 +921,8 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               Double_t fBinBackgroundValue;
               Double_t fBinSignalOverBackground;
               Double_t fBinSignificance;
-              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundPion", "SignalOverBackgroundPion   ; m_{eeee} (GeV/#font[12]{c^{2}}); Ratio #frac{S}{B}"                , endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
-              TH1D* hSignificance         = new TH1D("SignificancePion"         , "SignificancePion          ; m_{eeee} (GeV/#font[12]{c^{2}}); Significance #frac{S}{#sqrt{S+B}}", endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundPion", "   ; m_{eeee} (GeV/#font[12]{c^{2}}); Ratio #frac{S}{B}"                , endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignificance         = new TH1D("SignificancePion"        , "   ; m_{eeee} (GeV/#font[12]{c^{2}}); Significance #frac{S}{#sqrt{S+B}}", endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
               hSignalOverBackground -> GetYaxis()->SetTitleOffset(1.2);
               hSignificance         -> GetYaxis()->SetTitleOffset(1.1);
 
@@ -1191,8 +1191,8 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               Double_t fBinBackgroundValue;
               Double_t fBinSignalOverBackground;
               Double_t fBinSignificance;
-              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundEta", "SignalOverBackgroundEta  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Ratio #frac{S}{B}"                 , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
-              TH1D* hSignificance         = new TH1D("SignificanceEta"        , "SignificanceEta          ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Significance #frac{S}{#sqrt{S+B}}" , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundEta", "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Ratio #frac{S}{B}"                 , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignificance         = new TH1D("SignificanceEta"        , "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Significance #frac{S}{#sqrt{S+B}}" , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
               hSignalOverBackground -> GetYaxis()->SetTitleOffset(1.2);
               hSignificance         -> GetYaxis()->SetTitleOffset(1.1);
 
