@@ -41,9 +41,9 @@ Bool_t ExtFourPairEtaSig      = kTRUE;
   Bool_t ExtGenSmeared          = kFALSE;    // Extract Generated Smeared Signal
   Bool_t ExtRec                 = kTRUE;    // Extract Reconstructed Signal
 
-Bool_t ExtDielectronPairSpectra = kFALSE;  // Extract the TH2 mass vs pt histogram from the reconstructed dielectron pairs
+Bool_t ExtDielectronPairSpectra = kTRUE;  // Extract the TH2 mass vs pt histogram from the reconstructed dielectron pairs
 
-Bool_t ExtPreFilterSpectra    = kFALSE;     // Extract the Prefilter histograms before and after the prefilters are applied
+Bool_t ExtPreFilterSpectra    = kTRUE;     // Extract the Prefilter histograms before and after the prefilters are applied
 
 Bool_t ExtMassCut             = kFALSE;    // Extract Mass Cut Histogram
 Bool_t DoCutEff               = kFALSE;    // Plotting Cut Efficiency
@@ -74,7 +74,8 @@ double MassCutSecondary = 0.01;
 // TString TrainNumber = "merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel";
 // TString TrainNumber = "merged_408_LHC18H1_409_LHC17h3_410_LHC17d1_LF_Dalitz_GammaGamma_noMassCut_withPrefilter";
 // TString TrainNumber = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
-TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
+// TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
+TString TrainNumber = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
 
 
 void ExtractSignal(){

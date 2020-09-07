@@ -46,7 +46,8 @@ TString fFileHistNames;
 TString DataFolder = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
 
 // TString DataFolder2 = "merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel";
-TString DataFolder2 = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
+// TString DataFolder2 = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
+TString DataFolder2 = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
 
 TString pathToFirstRootFile  = Form("Plots/%s/PrimSecPairing/FourPair/FourPairJPID_sum1_pt75_sec_kV0List/TemplateFit/Nrec_FourAnyPartPair1_FinalState_UndefinedMother/Signals/",DataFolder.Data());
 TString pathToSecondRootFile = Form("Plots/%s/SecSecPairing/FourPair/FourPairpairkV0ListSecSec/TemplateFit/Nrec_FourAnyPartPair1_Secondary_UndefinedMother/Signals/",DataFolder.Data());
@@ -110,8 +111,10 @@ void PlotTwoHistograms() {
     hist1->SetLineColor(kBlue);   hist1->SetLineWidth(2);
     hist2->SetLineColor(kRed);    hist2->SetLineWidth(2);
 
-    hist1->GetXaxis()->SetTitleOffset(1.4);
-    hist2->GetXaxis()->SetTitleOffset(1.4);
+    if(doSoB) hist1->GetXaxis()->SetTitleOffset(1.4);
+    if(doSoB) hist2->GetXaxis()->SetTitleOffset(1.4);
+    if(doSignificance) hist1->GetXaxis()->SetTitleOffset(1.2);
+    if(doSignificance) hist2->GetXaxis()->SetTitleOffset(1.2);
     hist1->GetYaxis()->SetTitleOffset(1.2);
     hist2->GetYaxis()->SetTitleOffset(1.2);
 
