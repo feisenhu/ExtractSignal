@@ -27,11 +27,15 @@ Bool_t output_PDF     = kTRUE;
 Bool_t output_PNG     = kFALSE;
 
 //Plot Signal over Background or Significance
-Bool_t doSoB          = kTRUE;
+Bool_t doSoB          = kFALSE;
 Bool_t doSignificance = !doSoB;
 
 // Bool to plot Dalitz and GammaGamma hisograms from 2 different  Trains (toal: 4 histos)
 Bool_t CompDiffTrains = kTRUE;
+
+// Chnage legend to first entry with Prefilter, second without Prefilter
+// if Bool true: compare w/wo Prefilter, if false: compare Dalitz diff prim pair mass cuts
+Bool_t compWandWOPreFilter = kTRUE;
 
 // TString rebinCase = "rebin50";
 TString rebinCase = "rebin20";
@@ -44,10 +48,12 @@ TString fFileHistNames;
 // TString DataFolder = "merged_408_LHC18H1_409_LHC17h3_410_LHC17d1_LF_Dalitz_GammaGamma_noMassCut_withPrefilter";
 // TString DataFolder = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
 TString DataFolder = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
+// TString DataFolder = "merged_429_LHC18h1_430_LHC17d1_LF_431_LHC17h3_DalitzGammaGamma_withoutPrefilter_withMassCut0-0.35";
 
 // TString DataFolder2 = "merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel";
 // TString DataFolder2 = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
-TString DataFolder2 = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
+// TString DataFolder2 = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
+TString DataFolder2 = "merged_429_LHC18h1_430_LHC17d1_LF_431_LHC17h3_DalitzGammaGamma_withoutPrefilter_withMassCut0-0.35";
 
 TString pathToFirstRootFile  = Form("Plots/%s/PrimSecPairing/FourPair/FourPairJPID_sum1_pt75_sec_kV0List/TemplateFit/Nrec_FourAnyPartPair1_FinalState_UndefinedMother/Signals/",DataFolder.Data());
 TString pathToSecondRootFile = Form("Plots/%s/SecSecPairing/FourPair/FourPairpairkV0ListSecSec/TemplateFit/Nrec_FourAnyPartPair1_Secondary_UndefinedMother/Signals/",DataFolder.Data());
@@ -141,12 +147,17 @@ void PlotTwoHistograms() {
       TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec","l");
       TLegendEntry *entry2=legend->AddEntry(hist2,"#gamma #gamma Rec","l");
     }
-    if(CompDiffTrains){
+    if(CompDiffTrains && !compWandWOPreFilter){
       TLegendEntry *entry1=legend->AddEntry(hist1,"#splitline{Dalitz Rec}{0.0 < m^{prim}_{ee} < 0.35 #frac{GeV}{c^{2}}}","l");
       // TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec with m^{prim}_{ee} 0.0-0.35","l");
       // TLegendEntry *entry3=legend->AddEntry(hist3,"Dalitz Rec with m^{prim}_{ee} 0.1-0.2","l");
       TLegendEntry *entry3=legend->AddEntry(hist3,"#splitline{Dalitz Rec}{0.1 < m^{prim}_{ee} < 0.2 #frac{GeV}{c^{2}}}","l");
       // TLegendEntry *entry4=legend->AddEntry(hist4,"#gamma #gamma Rec","l");
+    }
+    else if(CompDiffTrains && compWandWOPreFilter){
+      TLegendEntry *entry1=legend->AddEntry(hist1,"Dalitz Rec with prefilter","l");
+      TLegendEntry *entry3=legend->AddEntry(hist3,"Dalitz Rec without prefilter","l");
+
     }
     legend->SetBorderSize(0);
     legend->SetFillColorAlpha(0, 0.0);
@@ -185,7 +196,7 @@ void PlotTwoHistograms() {
   }
   // cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_PrimSec_GammaGamma/%s.pdf",DataFolder.Data(),arrFileHistNames->At(iHist)->GetName()));
 
-  TString CompareCase;  if(!CompDiffTrains) CompareCase = "DDYY"; if(CompDiffTrains) CompareCase = "DD0.0-0.35&0.1-0.2";
+  TString CompareCase;  if(!CompDiffTrains) CompareCase = "DDYY"; if(CompDiffTrains && !compWandWOPreFilter) CompareCase = "DD0.0-0.35&0.1-0.2"; if(CompDiffTrains && compWandWOPreFilter) CompareCase = "DDw&woPrefilter";
   if (output_PDF) {
     if(doSoB)          cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignalOverBackground_Eta_%s%s.pdf",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));
     if(doSignificance) cSignalCanvas -> SaveAs(Form("Plots/%s/Comparison_Dalitz_GammaGamma/AllSignificance_Eta_%s%s.pdf",DataFolder.Data(),rebinCase.Data(),CompareCase.Data()));

@@ -43,7 +43,7 @@ Bool_t ExtFourPairEtaSig      = kTRUE;
 
 Bool_t ExtDielectronPairSpectra = kTRUE;  // Extract the TH2 mass vs pt histogram from the reconstructed dielectron pairs
 
-Bool_t ExtPreFilterSpectra    = kTRUE;     // Extract the Prefilter histograms before and after the prefilters are applied
+Bool_t ExtPreFilterSpectra    = kFALSE;     // Extract the Prefilter histograms before and after the prefilters are applied
 
 Bool_t ExtMassCut             = kFALSE;    // Extract Mass Cut Histogram
 Bool_t DoCutEff               = kFALSE;    // Plotting Cut Efficiency
@@ -74,8 +74,9 @@ double MassCutSecondary = 0.01;
 // TString TrainNumber = "merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel";
 // TString TrainNumber = "merged_408_LHC18H1_409_LHC17h3_410_LHC17d1_LF_Dalitz_GammaGamma_noMassCut_withPrefilter";
 // TString TrainNumber = "merged_412_LHC18h1_413_LHC17h3_414_LHC17d1_LF_OnlyRec_DalitzGamma_withPrefilter_0.1-0.2MassCut";
-// TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
-TString TrainNumber = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
+TString TrainNumber = "merged_419_LHC18h1_420_LHC17h3_421_LHC17d1_LF_OnlyRec_DalitzGammaGamma_widerSecSecPrefilter_0-0.35MassCut";
+// TString TrainNumber = "merged_426_LHC17h3_427_LHC17d1_LF_428_LHC18h1_OnlyRec_DalitzGammaGamma_withPrefilters_withMassCut0.1-0.2";
+// TString TrainNumber = "merged_429_LHC18h1_430_LHC17d1_LF_431_LHC17h3_DalitzGammaGamma_withoutPrefilter_withMassCut0-0.35";
 
 
 void ExtractSignal(){
@@ -139,8 +140,8 @@ void ExtractSignal(){
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_376_LHC17d1_LF_377_LHC17h3_378_LHC18h1_Dalitz_withoutPreFilter_NoMassCut/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_403_LHC18h1_child3_404_LHC17h3_405_LHC17d1_LF_407_LHC18h1_child1+2_Dalitz_withPreFilter_withMasscut0-0.35_lowerSplitLevel/AnalysisResults.root");
   // TFile *fFile = new TFile("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/merged_408_LHC18H1_409_LHC17h3_410_LHC17d1_LF_Dalitz_GammaGamma_noMassCut_withPrefilter/AnalysisResults.root");
-  // TFile *fFile = new TFile(Form("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/%s/AnalysisResults.root",TrainNumber.Data()));
-  TFile *fFile = new TFile(Form("~/Dokumente/Uni/feisenhut/LegoTrainsOutputs/DQ_pp_MC_AOD/%s/AnalysisResults.root",TrainNumber.Data()));
+  TFile *fFile = new TFile(Form("/u/feisenhut/Documents/Uni/Masterarbeit/Sicherung/LegoTrainsOutputs/DQ_pp_MC_AOD/%s/AnalysisResults.root",TrainNumber.Data()));
+  // TFile *fFile = new TFile(Form("~/Dokumente/Uni/feisenhut/LegoTrainsOutputs/DQ_pp_MC_AOD/%s/AnalysisResults.root",TrainNumber.Data()));
 
                                                                                 if(DoDebug) Printf("%d", __LINE__);
 
@@ -687,6 +688,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
         SetFitSettingsEta(fMCHistFit_eta);
 
         auto legendInfo = new TLegend(0.52,0.22,0.87,0.42);
+        // auto legendInfo = new TLegend(0.45,0.18,0.87,0.5);
         TLegendEntry *entry4=legendInfo->AddEntry("collisionSystem"   ,"pp, #sqrt{s} = 13 TeV, |#eta_{e}| < 0.8","");
         TLegendEntry *entry1=legendInfo->AddEntry("SinglePtPrim","#font[12]{p}_{T,e}^{prim} > 0.075 GeV/#font[12]{c}","");
         TLegendEntry *entry2=legendInfo->AddEntry("SinglePtSec" ,"#font[12]{p}_{T,e}^{sec} > 0.02 GeV/#font[12]{c}","");
@@ -695,6 +697,7 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
         legendInfo->SetBorderSize(0);
         legendInfo->SetFillColorAlpha(0, 0.0);
         legendInfo->SetTextSize(0.04);
+        // legendInfo->SetTextSize(0.05);
 
 
 
@@ -922,8 +925,8 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               Double_t fBinBackgroundValue;
               Double_t fBinSignalOverBackground;
               Double_t fBinSignificance;
-              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundPion", "   ; m_{eeee} (GeV/#font[12]{c^{2}}); Ratio #frac{S}{B}"                , endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
-              TH1D* hSignificance         = new TH1D("SignificancePion"        , "   ; m_{eeee} (GeV/#font[12]{c^{2}}); Significance #frac{S}{#sqrt{S+B}}", endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundPion", "   ; m_{eeee} (GeV/#font[12]{c^{2}}); S/B"                , endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignificance         = new TH1D("SignificancePion"        , "   ; m_{eeee} (GeV/#font[12]{c^{2}}); 1/#sqrt{N_{ev}} S/#sqrt{S+B}", endBin-startBin+1,fMCprojS_pion->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_pion->GetXaxis()->GetBinUpEdge(endBin));
               hSignalOverBackground -> GetYaxis()->SetTitleOffset(1.2);
               hSignificance         -> GetYaxis()->SetTitleOffset(1.1);
 
@@ -1192,8 +1195,8 @@ void DrawProjection(std::vector<TH2D> VecHistos, std::vector<Double_t> vec_proj_
               Double_t fBinBackgroundValue;
               Double_t fBinSignalOverBackground;
               Double_t fBinSignificance;
-              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundEta", "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Ratio #frac{S}{B}"                 , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
-              TH1D* hSignificance         = new TH1D("SignificanceEta"        , "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; Significance #frac{S}{#sqrt{S+B}}" , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignalOverBackground = new TH1D("SignalOverBackgroundEta", "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; S/B"                 , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
+              TH1D* hSignificance         = new TH1D("SignificanceEta"        , "  ; m_{eeee} #frac{GeV}{#font[12]{c^{2}}}; 1/#sqrt{N_{ev}} S/#sqrt{S+B}" , endBin-startBin+1,fMCprojS_eta->GetXaxis()->GetBinLowEdge(startBin),fMCprojS_eta->GetXaxis()->GetBinUpEdge(endBin));
               hSignalOverBackground -> GetYaxis()->SetTitleOffset(1.2);
               hSignificance         -> GetYaxis()->SetTitleOffset(1.1);
 
